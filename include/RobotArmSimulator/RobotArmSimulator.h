@@ -273,7 +273,10 @@ class RobotArmSimulator
   
   // </rtc-template>
 
+  int drawWindow;
+
  private:
+  
   // <rtc-template block="private_attribute">
   
   // </rtc-template>
