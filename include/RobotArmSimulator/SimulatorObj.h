@@ -41,7 +41,7 @@ public:
 	SimulatorObj();
 	~SimulatorObj();
 	coil::Mutex mu;
-	MyLink link0, link1, link2, link3, linkh, linkf[2];
+	MyLink link0, link1, link2, link3, linkhs, linkh, linkf[2];
 	RobotArm *rb;
 	double st;
 	double gravity;
@@ -66,6 +66,7 @@ public:
 
 
 	void m_nearCallback(dGeomID o1, dGeomID o2);
+
 
 	
 

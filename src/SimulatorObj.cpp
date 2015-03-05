@@ -11,7 +11,7 @@ SimulatorObj::SimulatorObj()
 	pause = false;
 
 	rb = new RobotArm();
-	rb->setOffset(0, PI/2, 0);
+	rb->setOffset(0, PI/2, 0, 0);
 
 	dInitODE();
 	world        = dWorldCreate();
@@ -109,6 +109,23 @@ void SimulatorObj::makeParam()
 	link3.green = 1.;
 	link3.blue = 0.;
 
+	linkhs.m = rb->mh;
+	linkhs.lx = rb->wi;
+	linkhs.ly = rb->wi;
+	linkhs.lz = rb->wi;
+	linkhs.x = rb->jh(0);
+	linkhs.y = rb->jh(1);
+	linkhs.z = rb->jh(2);
+	linkhs.jx = rb->jh(0);
+	linkhs.jy = rb->jh(1);
+	linkhs.jz = rb->jh(2);
+	linkhs.axisx = 1;
+	linkhs.axisy = 0;
+	linkhs.axisz = 0;
+	linkhs.red = 1.;
+	linkhs.green = 1.;
+	linkhs.blue = 0.;
+
 	linkh.m = rb->mh;
 	linkh.lx = rb->rh;
 	linkh.ly = rb->wi;
@@ -119,9 +136,9 @@ void SimulatorObj::makeParam()
 	linkh.jx = rb->jh(0);
 	linkh.jy = rb->jh(1);
 	linkh.jz = rb->jh(2);
-	linkh.axisx = 1;
+	linkh.axisx = 0;
 	linkh.axisy = 0;
-	linkh.axisz = 0;
+	linkh.axisz = 1;
 	linkh.red = 1.;
 	linkh.green = 1.;
 	linkh.blue = 0.;
@@ -205,6 +222,7 @@ void SimulatorObj::makeRobot()
 	setBox(&link1);
 	setBox(&link2);
 	setBox(&link3);
+	setBox(&linkhs);
 	setCylinder(&linkh);
 	/*dMatrix3 R;
 	dRFromAxisAndAngle(R, 1, 0, 0, PI/2);
@@ -219,7 +237,8 @@ void SimulatorObj::makeRobot()
 	setHinge(&link1, &link0);
 	setHinge(&link2, &link1);
 	setHinge(&link3, &link2);
-	setHinge(&linkh, &link3);
+	setHinge(&linkhs, &link3);
+	setHinge(&linkh, &linkhs);
 	setSlider(&linkf[0], &linkh);
 	setSlider(&linkf[1], &linkh);
 	pause = true;
@@ -300,7 +319,8 @@ void SimulatorObj::control()
 	controlHinge(&link1, -rb->theta[0]+rb->offset[0]);//
 	controlHinge(&link2, -rb->theta[1]+rb->offset[1]);//
 	controlHinge(&link3, -rb->theta[2]+rb->offset[2]);//
-	controlHinge(&linkh, -r2-r3);//
+	controlHinge(&linkhs, -r2-r3);//
+	controlHinge(&linkh, -rb->theta[3]);//
 	controlSlider(&linkf[0], rb->gripperPos/2);//
 	controlSlider(&linkf[1], -rb->gripperPos/2);//
 }

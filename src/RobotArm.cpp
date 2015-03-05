@@ -17,8 +17,8 @@ RobotArm::RobotArm()
 	pl = new Vector3d[4];
 	l[0] = 0.05;
 	l[1] = 0.05;
-	l[2] = 0.1;
-	l[3] = 0.1;
+	l[2] = 0.15;
+	l[3] = 0.15;
 	lh = 0.01;
 	lf = 0.02;
 	m[0] = 0.1;
@@ -72,7 +72,7 @@ RobotArm::RobotArm()
 	pf(2) = jf(2)-lf/2;
 	hw = 0.02;
 
-	setAngle(0, 0, 0);
+	setAngle(0, 0, 0, 0);
 
 
 	dt = 0.01;
@@ -86,7 +86,7 @@ RobotArm::RobotArm()
 	startPoint(1) = 0;
 	startPoint(2) = 0;*/
 
-	setOffset(0,0,0);
+	setOffset(0,0,0,0);
 
 	Kp = 10;
 	
@@ -96,6 +96,7 @@ RobotArm::RobotArm()
 	maxSpeedJoint[0] = 1000;
 	maxSpeedJoint[1] = 1000;
 	maxSpeedJoint[2] = 1000;
+	maxSpeedJoint[3] = 1000;
 
 	softUpperLimitCartesian = Vector3d(1000, 1000, 1000);
 	softLowerLimitCartesian = Vector3d(-1000, -1000, -1000);
@@ -110,19 +111,22 @@ RobotArm::RobotArm()
 	softUpperLimitJoint[0] = PI;
 	softUpperLimitJoint[1] = PI;
 	softUpperLimitJoint[2] = PI*3/2;
+	softUpperLimitJoint[3] = PI/2;
 
 	softLowerLimitJoint[0] = -PI;
 	softLowerLimitJoint[1] = -PI;
 	softLowerLimitJoint[2] = -PI/2;
+	softLowerLimitJoint[3] = -PI/2;
 
 	serbo = true;
 
 	manifactur = "";
 	type = "";
-	axisNum = 3;
+	axisNum = 4;
 	cmdCycle = 100;
-	isGripper = true;
+	isGripper = false;
 	
+
 }
 
 void RobotArm::goHomePosition()
@@ -139,7 +143,7 @@ void RobotArm::goHomePosition()
 
 void RobotArm::setHomePosition(double *jp)
 {
-	for(int i=0;i < 3;i++)
+	for(int i=0;i < 4;i++)
 	{
 		homeTheta[i] = jp[i];
 	}
@@ -172,7 +176,7 @@ void RobotArm::update(double st)
 
 		Vector3d dthe = calcJointVel(Vector3d(dPx, dPy, dPz));
 
-		updatePos(dthe(0), dthe(1), dthe(2));
+		updatePos(dthe(0), dthe(1), dthe(2), 0);
 
 		
 
@@ -217,20 +221,21 @@ void RobotArm::update(double st)
 
 		Vector3d dthe = calcJointVel(Vector3d(dPx, dPy, dPz));
 
-		updatePos(dthe(0), dthe(1), dthe(2));
+		updatePos(dthe(0), dthe(1), dthe(2), 0);
 	}
 	
 }
 
-void RobotArm::setOffset(double o1, double o2, double o3)
+void RobotArm::setOffset(double o1, double o2, double o3, double o4)
 {
 	offset[0] = o1;
 	offset[1] = o2;
 	offset[2] = o3;
+	offset[2] = o4;
 
-	setAngle(o1,o2,o3);
+	setAngle(o1,o2,o3,o4);
 
-	double hp[3] = {o1, o2, o3};
+	double hp[4] = {o1, o2, o3, o4};
 	setHomePosition(hp);
 	goHomePosition();
 }
@@ -286,11 +291,12 @@ void RobotArm::setTargetPos()
 	return;
 }
 
-void RobotArm::setAngle(double t1, double t2, double t3)
+void RobotArm::setAngle(double t1, double t2, double t3, double t4)
 {
 	theta[0] = t1;
 	theta[1] = t2;
 	theta[2] = t3;
+	theta[3] = t4;
 
 	judgeSoftLimitJoint();
 }
@@ -357,7 +363,7 @@ Vector3d RobotArm::calcJointVel(Vector3d v)
 
 void RobotArm::judgeSoftLimitJoint()
 {
-	for(int i=0;i < 3;i++)
+	for(int i=0;i < 4;i++)
 	{
 		if(theta[i] > softUpperLimitJoint[i])
 		{
@@ -373,7 +379,7 @@ void RobotArm::judgeSoftLimitJoint()
 	}
 }
 
-void RobotArm::updatePos(double v1, double v2, double v3)
+void RobotArm::updatePos(double v1, double v2, double v3, double v4)
 {
 
 	/*std::cout << v1 << std::endl;
@@ -383,6 +389,7 @@ void RobotArm::updatePos(double v1, double v2, double v3)
 	theta[0] = theta[0] + v1*dt;
 	theta[1] = theta[1] + v2*dt;
 	theta[2] = theta[2] + v3*dt;
+	theta[3] = theta[3] + v4*dt;
 
 	judgeSoftLimitJoint();
 
@@ -422,6 +429,7 @@ void RobotArm::setMaxSpeedJoint(double *msj)
 	maxSpeedJoint[0] = msj[0];
 	maxSpeedJoint[1] = msj[1];
 	maxSpeedJoint[2] = msj[2];
+	maxSpeedJoint[3] = msj[3];
 }
 
 void RobotArm::setSoftLimitCartesian(Vector3d usl, Vector3d lsl)
@@ -450,13 +458,20 @@ void RobotArm::setSoftLimitJoint(double *usl, double *lsl)
 	softUpperLimitJoint[0] = usl[0];
 	softUpperLimitJoint[1] = usl[1];
 	softUpperLimitJoint[2] = usl[2];
+	softUpperLimitJoint[3] = usl[3];
 
 	softLowerLimitJoint[0] = lsl[0];
 	softLowerLimitJoint[1] = lsl[1];
 	softLowerLimitJoint[2] = lsl[2];
+	softLowerLimitJoint[3] = lsl[3];
 }
 
 void RobotArm::setSerbo(bool state)
 {
 	serbo = state;
+}
+
+void RobotArm::setHandJointPosition(double hjp)
+{
+	theta[3] = hjp;
 }

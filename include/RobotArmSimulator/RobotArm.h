@@ -25,11 +25,11 @@ class RobotArm
 public:
 	RobotArm();
 	Vector3d calcKinematics();
-	void setAngle(double t1, double t2, double t3);
+	void setAngle(double t1, double t2, double t3, double t4);
 	Matrix3d calcJacobian();
 	Vector3d calcJointVel(Vector3d v);
-	void updatePos(double v1, double v2, double v3);
-	void setOffset(double o1, double o2, double o3);
+	void updatePos(double v1, double v2, double v3, double v4);
+	void setOffset(double o1, double o2, double o3, double o4);
 	void setTargetPos();
 	void update(double st);
 	void openGripper();
@@ -50,8 +50,8 @@ public:
 	Vector3d pf;
 	double hw;
 
-	double theta[3];
-	double homeTheta[3];
+	double theta[4];
+	double homeTheta[4];
 
 	double dt;
 	double endTime;
@@ -59,7 +59,7 @@ public:
 	Vector3d targetPoint;
 	Vector3d startPoint;
 
-	double offset[3];
+	double offset[4];
 
 	double Kp;
 
@@ -79,24 +79,27 @@ public:
 	void setHomePosition(double *jp);
 	void setSerbo(bool state);
 	void judgeSoftLimitJoint();
+	
 
 
 	Matrix4d baseOffset;
 	Vector3d maxSpeedCartesian;
-	double maxSpeedJoint[3];
+	double maxSpeedJoint[4];
 	Vector3d softUpperLimitCartesian;
 	Vector3d softLowerLimitCartesian;
 	bool pauseFalg;
 	bool stopFalg;
 	Vector3d homePosition;
-	double softUpperLimitJoint[3];
-	double softLowerLimitJoint[3];
+	double softUpperLimitJoint[4];
+	double softLowerLimitJoint[4];
 	bool serbo;
 	std::string manifactur;
 	std::string type;
 	int axisNum;
 	int cmdCycle;
 	bool isGripper;
+
+	void setHandJointPosition(double hjp);
 
 };
 
