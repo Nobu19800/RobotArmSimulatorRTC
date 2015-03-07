@@ -120,6 +120,7 @@ RTC::ReturnCode_t RobotArmSimulator::onActivated(RTC::UniqueId ec_id)
 
   		m_dt->activate();
 	}
+
   return RTC::RTC_OK;
 }
 
@@ -133,6 +134,8 @@ RTC::ReturnCode_t RobotArmSimulator::onDeactivated(RTC::UniqueId ec_id)
 RTC::ReturnCode_t RobotArmSimulator::onExecute(RTC::UniqueId ec_id)
 {
 	m_so->update();
+	if(m_so->rb->stopFalg)
+		return RTC::RTC_ERROR;
 	
 	m_jpos.data.length(m_so->rb->axisNum);
 	for(int i=0;i < m_so->rb->axisNum;i++)

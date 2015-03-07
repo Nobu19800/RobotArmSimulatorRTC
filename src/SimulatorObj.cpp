@@ -11,7 +11,7 @@ SimulatorObj::SimulatorObj()
 	pause = false;
 
 	rb = new RobotArm();
-	rb->setOffset(0, PI/2, 0, 0);
+	
 
 	dInitODE();
 	world        = dWorldCreate();
@@ -243,6 +243,9 @@ void SimulatorObj::makeRobot()
 	setSlider(&linkf[1], &linkh);
 	pause = true;
 	mu.unlock();
+
+	rb->setOffset(0, PI/2, 0, 0);
+	rb->setStartPos(0, 1.5, -0.5, 0);
 }
 
 void SimulatorObj::m_nearCallback(dGeomID o1, dGeomID o2)
