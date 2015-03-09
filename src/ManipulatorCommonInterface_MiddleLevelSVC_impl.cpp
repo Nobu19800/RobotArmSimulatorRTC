@@ -43,6 +43,18 @@ JARA_ARM::RETURN_ID *ManipulatorCommonInterface_MiddleSVC_impl::getBaseOffset(JA
 JARA_ARM::RETURN_ID *ManipulatorCommonInterface_MiddleSVC_impl::getFeedbackPosCartesian(JARA_ARM::CarPosWithElbow_out pos)
 {
 	JARA_ARM::RETURN_ID_var result = new JARA_ARM::RETURN_ID();
+	JARA_ARM::CarPosWithElbow_var cpos_var = new JARA_ARM::CarPosWithElbow;
+	
+	Vector3d p = m_robotArm->calcKinematics();
+	cpos_var->carPos[0][0] = cos(m_robotArm->theta[3]);
+	cpos_var->carPos[0][1] = -sin(m_robotArm->theta[3]);
+	cpos_var->carPos[1][0] = sin(m_robotArm->theta[3]);
+	cpos_var->carPos[1][1] = cos(m_robotArm->theta[3]);
+	cpos_var->carPos[2][2] = 1;
+	cpos_var->carPos[0][3] = p(0);
+	cpos_var->carPos[1][3] = p(1);
+	cpos_var->carPos[2][3] = p(2);
+	pos = cpos_var._retn();
 	return result._retn();
 }
 
@@ -89,7 +101,7 @@ JARA_ARM::RETURN_ID *ManipulatorCommonInterface_MiddleSVC_impl::moveGripper(JARA
 
 JARA_ARM::RETURN_ID *ManipulatorCommonInterface_MiddleSVC_impl::moveLinearCartesianAbs(const JARA_ARM::CarPosWithElbow& carPoint)
 {
-	m_robotArm->addTargetPos(Vector3d(carPoint.carPos[0][3], carPoint.carPos[1][3], carPoint.carPos[2][3]), -1);
+	m_robotArm->addTargetPos(Vector3d(carPoint.carPos[0][3], carPoint.carPos[1][3], carPoint.carPos[2][3]), acos(carPoint.carPos[0][0]), -1);
 	JARA_ARM::RETURN_ID_var result = new JARA_ARM::RETURN_ID();
 	return result._retn();
 }
@@ -97,7 +109,7 @@ JARA_ARM::RETURN_ID *ManipulatorCommonInterface_MiddleSVC_impl::moveLinearCartes
 JARA_ARM::RETURN_ID *ManipulatorCommonInterface_MiddleSVC_impl::moveLinearCartesianRel(const JARA_ARM::CarPosWithElbow& carPoint)
 {
 	Vector3d pos = m_robotArm->calcKinematics();
-	m_robotArm->addTargetPos(Vector3d(carPoint.carPos[0][3]+pos(0), carPoint.carPos[1][3]+pos(1), carPoint.carPos[2][3]+pos(2)), -1);
+	m_robotArm->addTargetPos(Vector3d(carPoint.carPos[0][3]+pos(0), carPoint.carPos[1][3]+pos(1), carPoint.carPos[2][3]+pos(2)), acos(carPoint.carPos[0][0])+m_robotArm->theta[3], -1);
 	JARA_ARM::RETURN_ID_var result = new JARA_ARM::RETURN_ID();
 	return result._retn();
 }
@@ -117,12 +129,17 @@ JARA_ARM::RETURN_ID *ManipulatorCommonInterface_MiddleSVC_impl::movePTPCartesian
 JARA_ARM::RETURN_ID *ManipulatorCommonInterface_MiddleSVC_impl::movePTPJointAbs(const JARA_ARM::JointPos& jointPoints)
 {
 	JARA_ARM::RETURN_ID_var result = new JARA_ARM::RETURN_ID();
+	double tp[4] = {jointPoints[0], jointPoints[1], jointPoints[2], jointPoints[3]};
+	m_robotArm->addTargetJointPos(tp, -1);
 	return result._retn();
 }
 
 JARA_ARM::RETURN_ID *ManipulatorCommonInterface_MiddleSVC_impl::movePTPJointRel(const JARA_ARM::JointPos& jointPoints)
 {
 	JARA_ARM::RETURN_ID_var result = new JARA_ARM::RETURN_ID();
+	double tp[4] = {jointPoints[0]+m_robotArm->theta[0], jointPoints[1]+m_robotArm->theta[1], jointPoints[2]+m_robotArm->theta[2], jointPoints[3]+m_robotArm->theta[3]};
+	m_robotArm->addTargetJointPos(tp, -1);
+	
 	return result._retn();
 }
 
