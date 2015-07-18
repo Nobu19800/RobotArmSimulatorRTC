@@ -18,7 +18,7 @@ static const char* robotarmsimulator_spec[] =
     "description",       "Robot Arm Simulator",
     "version",           "1.0.0",
     "vendor",            "Miyamoto Nobuhiko",
-    "category",          "TES",
+    "category",          "Manipulator",
     "activity_type",     "PERIODIC",
     "kind",              "DataFlowComponent",
     "max_instance",      "1",
