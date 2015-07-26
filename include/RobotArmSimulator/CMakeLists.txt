@@ -1,4 +1,5 @@
 set(hdrs RobotArmSimulator.h
+    PARENT_SCOPE
     ManipulatorCommonInterface_CommonSVC_impl.h
     ManipulatorCommonInterface_MiddleLevelSVC_impl.h
     )

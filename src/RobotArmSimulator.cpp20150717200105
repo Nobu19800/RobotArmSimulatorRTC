@@ -62,10 +62,10 @@ RTC::ReturnCode_t RobotArmSimulator::onInitialize()
   addOutPort("jpos", m_jposOut);
   
   // Set service provider to Ports
+  m_ManipulatorCommonInterface_CommonPort.registerProvider("ManipulatorCommonInterface_Common", "JARA_ARM::ManipulatorCommonInterface_Common", m_ManipulatorCommonInterface_Common);
+  m_ManipulatorCommonInterface_MiddlePort.registerProvider("ManipulatorCommonInterface_Middle", "JARA_ARM::ManipulatorCommonInterface_Middle", m_ManipulatorCommonInterface_Middle);
   
   // Set service consumers to Ports
-  m_ManipulatorCommonInterface_CommonPort.registerConsumer("ManipulatorCommonInterface_Common", "JARA_ARM::ManipulatorCommonInterface_Common", m_ManipulatorCommonInterface_Common);
-  m_ManipulatorCommonInterface_MiddlePort.registerConsumer("ManipulatorCommonInterface_Middle", "JARA_ARM::ManipulatorCommonInterface_Middle", m_ManipulatorCommonInterface_Middle);
   
   // Set CORBA Service Ports
   addPort(m_ManipulatorCommonInterface_CommonPort);
@@ -73,6 +73,9 @@ RTC::ReturnCode_t RobotArmSimulator::onInitialize()
   
   // </rtc-template>
 
+  // <rtc-template block="bind_config">
+  // </rtc-template>
+  
   return RTC::RTC_OK;
 }
 

@@ -25,15 +25,15 @@
 # If you want to load component specific configuration file, please
 # uncomment the following line.
 #
-# manipulater.RobotArmSimulator.config_file: RobotArmSimulator.conf
+# TES.RobotArmSimulator.config_file: RobotArmSimulator.conf
 # or
-# manipulater.RobotArmSimulator0.config_file: RobotArmSimulator0.conf
-# manipulater.RobotArmSimulator1.config_file: RobotArmSimulator1.conf
-# manipulater.RobotArmSimulator2.config_file: RobotArmSimulator2.conf
+# TES.RobotArmSimulator0.config_file: RobotArmSimulator0.conf
+# TES.RobotArmSimulator1.config_file: RobotArmSimulator1.conf
+# TES.RobotArmSimulator2.config_file: RobotArmSimulator2.conf
 #
 #------------------------------------------------------------
 
-manipulater.RobotArmSimulator.config_file: RobotArmSimulator.conf
+TES.RobotArmSimulator.config_file: RobotArmSimulator.conf
 
 #
 # Please delete the following part if you are familiar with OpenRTM's

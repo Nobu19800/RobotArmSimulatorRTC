@@ -5,11 +5,11 @@
 # This configuration file name should be specified in rtc.conf (or other
 # configuration file specified by -f option) by "config_file" property.
 #
-# manipulater.RobotArmSimulator.config_file: RobotArmSimulator.conf
+# TES.RobotArmSimulator.config_file: RobotArmSimulator.conf
 # or
-# manipulater.RobotArmSimulator0.config_file: RobotArmSimulator0.conf
-# manipulater.RobotArmSimulator1.config_file: RobotArmSimulator1.conf
-# manipulater.RobotArmSimulator2.config_file: RobotArmSimulator2.conf
+# TES.RobotArmSimulator0.config_file: RobotArmSimulator0.conf
+# TES.RobotArmSimulator1.config_file: RobotArmSimulator1.conf
+# TES.RobotArmSimulator2.config_file: RobotArmSimulator2.conf
 #
 # ------------------------------------------------------------
 # An example configuration file for RobotArmSimulator
