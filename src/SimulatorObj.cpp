@@ -145,7 +145,7 @@ void SimulatorObj::makeParam()
 
 	for(int i = 0;i < 2;i++)
 	{
-		linkf[i].m = rb->mh;
+		linkf[i].m = rb->mf;
 		linkf[i].lx = rb->hf;
 		linkf[i].ly = rb->wf;
 		linkf[i].lz = rb->lf;
@@ -225,7 +225,7 @@ void SimulatorObj::makeRobot()
 	setBox(&linkhs);
 	setCylinder(&linkh);
 	/*dMatrix3 R;
-	dRFromAxisAndAngle(R, 1, 0, 0, PI/2);
+	dRFromAxisAndAngle(R, 1, 0, 0, M_PI/2);
 	dGeomSetRotation(linkh.geom,  R);*/
 
 	setBox(&linkf[0]);
@@ -244,7 +244,7 @@ void SimulatorObj::makeRobot()
 	pause = true;
 	mu.unlock();
 
-	rb->setOffset(0, PI/2, 0, 0);
+	rb->setOffset(0, M_PI/2, 0, 0);
 	rb->setStartPos(0, 1.5, -0.5, 0);
 }
 
