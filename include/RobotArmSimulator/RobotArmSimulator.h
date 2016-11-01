@@ -274,6 +274,28 @@ class RobotArmSimulator
   // </rtc-template>
 
   int drawWindow;
+  // Configuration variable declaration
+  /*!
+   * 描画の速さ
+   * - Name: fps draw_time
+   * - DefaultValue: 0.01
+   * - Unit: Hz
+   */
+  double m_draw_time;
+  /*!
+   * シミュレーションのステップ時間
+   * 0以下の場合は実行周期
+   * - Name: sampling_time sampling_time
+   * - DefaultValue: -1
+   */
+  double m_sampling_time;
+  /*!
+   * 重力加速度
+   * - Name: gravity gravity
+   * - DefaultValue: -9.8
+   * - Unit: m/s^2
+   */
+  double m_gravity;
 
  private:
   

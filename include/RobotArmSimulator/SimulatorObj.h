@@ -139,7 +139,7 @@ public:
 	void m_nearCallback(dGeomID o1, dGeomID o2);
 
 
-	
+	void setSamplingTime(double s);
 
 
 

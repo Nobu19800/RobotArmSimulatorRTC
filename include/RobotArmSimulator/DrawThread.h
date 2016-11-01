@@ -54,7 +54,7 @@ public:
 		void drawRobot();
 		
 
-		
+		double fps;
 
 
 private:

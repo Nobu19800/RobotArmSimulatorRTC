@@ -25,8 +25,17 @@ static const char* robotarmsimulator_spec[] =
     "language",          "C++",
     "lang_type",         "compile",
     "conf.default.drawWindow", "1",
+    "conf.default.draw_time", "0.01",
+    "conf.default.sampling_time", "-1",
+    "conf.default.gravity", "-9.8",
     "conf.__widget__.drawWindow", "radio",
+    "conf.__widget__.draw_time", "text",
+    "conf.__widget__.sampling_time", "text",
+    "conf.__widget__.gravity", "text",
     "conf.__constraints__.drawWindow", "(0,1)",
+    "conf.__type__.draw_time", "double",
+    "conf.__type__.sampling_time", "double",
+    "conf.__type__.gravity", "double",
     ""
   };
 // </rtc-template>
@@ -83,6 +92,9 @@ RTC::ReturnCode_t RobotArmSimulator::onInitialize()
   // </rtc-template>
 
   bindParameter("drawWindow", drawWindow, "1");
+  bindParameter("draw_time", m_draw_time, "0.01");
+  bindParameter("sampling_time", m_sampling_time, "-1");
+  bindParameter("gravity", m_gravity, "-9.8");
 
 
   return RTC::RTC_OK;
@@ -113,12 +125,24 @@ RTC::ReturnCode_t RobotArmSimulator::onActivated(RTC::UniqueId ec_id)
 {
 	m_so->destroyRobot();
 	m_so->makeRobot();
+	if(m_sampling_time > 0)
+	{
+		m_so->setSamplingTime(m_sampling_time);
+	}
+	else
+	{
+		m_so->setSamplingTime(1.0 / this->getExecutionContext(0)->get_rate());
+	}
 
 	if(drawWindow == 1 && m_dt == NULL)
 	{
 		m_dt = new DrawThread(m_so);
 
   		m_dt->activate();
+	}
+	if (m_dt)
+	{
+		m_dt->fps = 1.0/m_draw_time;
 	}
 
   return RTC::RTC_OK;

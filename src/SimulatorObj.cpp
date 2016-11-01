@@ -433,3 +433,8 @@ void SimulatorObj::destroyRobot()
 
 	mu.unlock();
 }
+
+void SimulatorObj::setSamplingTime(double s)
+{
+	st = s;
+}
